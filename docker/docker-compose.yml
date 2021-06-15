@@ -1,0 +1,30 @@
+version: "3.3"
+services:
+  db:
+    image: mysql:5.6.40
+    container_name: next_pwa_db
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ''
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    ports:
+      - 3306:3306
+    volumes:
+      - ./db:/var/lib/mysql
+    expose: 
+      - 3306
+  node:
+    image: node
+    container_name: next_pwa_node
+    volumes: 
+      - ../next:/var/www/next-pwa/next
+    working_dir: /var/www/next-pwa/next
+    command: /bin/bash -c 'npm install && npm run dev'
+    expose: 
+      - 3000
+      - 3333
+    ports:
+      - 3000:3000
+      - 3333:3333
+    
